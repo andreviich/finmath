@@ -10,7 +10,6 @@ def createMatrix(length, rows , axe="X"):
         startIndex = 0
         endIndex = startIndex + rows - 1
         for i in range(rows):
-            print(f"{i} time, {startIndex=} {endIndex=}")
             arrExtra = []
             for i in range(length):
 
@@ -27,9 +26,7 @@ def createMatrix(length, rows , axe="X"):
             startIndex = i
             endIndex = int(startIndex + rows * (length / rows * (2/3)))
             arrExtra = []
-            print(f"{startIndex=} {endIndex=} {rows=}")
             inds = list(range(startIndex-1, endIndex, rows ))
-            print(inds)
             for i in range(length):
                 if i in inds:
                     arrExtra.append(1)
@@ -41,7 +38,7 @@ def createMatrix(length, rows , axe="X"):
 
 
 def main():
-    """Function for optimization"""
+    """Функция для оптимизации"""
     try:
         count = input("Введите размерность матрицы (целое число)...").strip()
 
@@ -69,7 +66,7 @@ def main():
                         cols = createMatrix(length=len(inputValues), rows=len(Yrow), axe="Y")
                         rows = createMatrix(length=len(inputValues), rows=len(Xrow), axe="X")
 
-                        print(f"{cols=} {rows=} {inputValues=} {Xrow=} {Yrow=}")
+                        # print(f"{cols=} {rows=} {inputValues=} {Xrow=} {Yrow=}")
 
 
                         print(f"{linprog(inputValues, rows,Yrow, cols, Xrow)} - result")
@@ -88,4 +85,3 @@ def main():
         print(e)
 if __name__ == '__main__':
     main()
-    # print(createMatrix(9, 3, axe="X"))
