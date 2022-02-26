@@ -1,11 +1,10 @@
 from scipy.optimize import linprog
-import numpy as np
-
-
 
 def createMatrix(length, rows , axe="X"):
     """Функция для создания матрицы в зависимости от задаваемой оси и количеству рядов"""
     arr = []
+
+    #генерация матрицы для горизонатали
     if axe == "X":
         startIndex = 0
         endIndex = startIndex + rows - 1
@@ -21,6 +20,7 @@ def createMatrix(length, rows , axe="X"):
             endIndex = startIndex + rows - 1
             arr.append(arrExtra)
 
+    #генерация матрицы для вертикали
     elif axe == "Y":
         for i in range(1, rows+1):
             startIndex = i
@@ -63,13 +63,15 @@ def main():
 
                         inputValues = [int(i.strip()) for i in inputValues.split()]
 
+                        # генерируем матрицу для колонок
                         cols = createMatrix(length=len(inputValues), rows=len(Yrow), axe="Y")
+
+                        # генерируем матрицу для строк
                         rows = createMatrix(length=len(inputValues), rows=len(Xrow), axe="X")
 
-                        # print(f"{cols=} {rows=} {inputValues=} {Xrow=} {Yrow=}")
 
-
-                        print(f"{linprog(inputValues, rows,Yrow, cols, Xrow)} - result")
+                        # вызываем функцию linprog для оптимизации
+                        return linprog(inputValues, rows,Yrow, cols, Xrow)
 
                     else:
                         raise TypeError("Неправильный ввод данных")
@@ -83,5 +85,8 @@ def main():
             raise TypeError('Введено не число')
     except TypeError as e:
         print(e)
+
+def output():
+    print(f"{main()} - result")
 if __name__ == '__main__':
-    main()
+    output()
