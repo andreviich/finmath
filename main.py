@@ -37,56 +37,70 @@ def createMatrix(length, rows , axe="X"):
 
 
 
-def main():
+def main(inputValues=None, Xrow=None,Yrow=None):
     """Функция для оптимизации"""
-    try:
-        count = input("Введите размерность матрицы (целое число)...").strip()
+    if not all([inputValues, Xrow, Yrow]):
+        try:
+            count = input("Введите размерность матрицы (целое число)...").strip()
 
-        if (count.isdigit()):
+            if (count.isdigit()):
 
-            count = int(count)
-            Xrow = input("Введите числа по оси X через пробел (целые числа)... ")
+                count = int(count)
+                Xrow = input("Введите числа по оси X через пробел (целые числа)... ")
 
-            if (len(Xrow.split()) == count and all([i.isdigit() for i in Xrow.split()])):
+                if (len(Xrow.split()) == count and all([i.isdigit() for i in Xrow.split()])):
 
-                Xrow = [int(i.strip()) for i in Xrow.split()]
-                Yrow = input("Введите числа по оси Y через пробел (целые числа)... ")
+                    Xrow = [int(i.strip()) for i in Xrow.split()]
+                    Yrow = input("Введите числа по оси Y через пробел (целые числа)... ")
 
-                if (len(Yrow.split()) == count and all([i.isdigit() for i in Yrow.split()])):
+                    if (len(Yrow.split()) == count and all([i.isdigit() for i in Yrow.split()])):
 
-                    Yrow = [int(i) for i in Yrow.split()]
+                        Yrow = [int(i) for i in Yrow.split()]
 
-                    countVals = len(Xrow)*len(Yrow)
-                    inputValues = input(f"Введите {countVals} чисел для оптимизации через пробел... ")
-                    print([i.isdigit() for i in inputValues])
-                    if (len(inputValues.split()) == countVals and all([i.isdigit() for i in inputValues.split()])):
+                        countVals = len(Xrow)*len(Yrow)
+                        inputValues = input(f"Введите {countVals} чисел для оптимизации через пробел... ")
+                        print([i.isdigit() for i in inputValues])
+                        if (len(inputValues.split()) == countVals and all([i.isdigit() for i in inputValues.split()])):
 
-                        inputValues = [int(i.strip()) for i in inputValues.split()]
+                            inputValues = [int(i.strip()) for i in inputValues.split()]
 
-                        # генерируем матрицу для колонок
-                        cols = createMatrix(length=len(inputValues), rows=len(Yrow), axe="Y")
+                            # генерируем матрицу для колонок
+                            cols = createMatrix(length=len(inputValues), rows=len(Yrow), axe="Y")
 
-                        # генерируем матрицу для строк
-                        rows = createMatrix(length=len(inputValues), rows=len(Xrow), axe="X")
+                            # генерируем матрицу для строк
+                            rows = createMatrix(length=len(inputValues), rows=len(Xrow), axe="X")
 
 
-                        # вызываем функцию linprog для оптимизации
-                        return linprog(inputValues, rows,Yrow, cols, Xrow)
+                            # вызываем функцию linprog для оптимизации
+                            return linprog(inputValues, rows,Yrow, cols, Xrow)
+
+                        else:
+                            raise TypeError("Неправильный ввод данных")
+
 
                     else:
-                        raise TypeError("Неправильный ввод данных")
-
-
+                        raise TypeError('Вы ввели числа в неверном формате')
                 else:
                     raise TypeError('Вы ввели числа в неверном формате')
             else:
-                raise TypeError('Вы ввели числа в неверном формате')
-        else:
-            raise TypeError('Введено не число')
-    except TypeError as e:
-        print(e)
+                raise TypeError('Введено не число')
+        except TypeError as e:
+            print(e)
+    else:
+        Xrow = [int(i.strip()) for i in Xrow.split()]
+        Yrow = [int(i) for i in Yrow.split()]
+
+        inputValues = [int(i.strip()) for i in inputValues.split()]
+
+        cols = createMatrix(length=len(inputValues), rows=len(Yrow), axe="Y")
+        rows = createMatrix(length=len(inputValues), rows=len(Xrow), axe="X")
+
+        return linprog(inputValues, rows,Yrow, cols, Xrow)
+
 
 def output():
-    print(f"{main()} - result")
+    res = main()
+    print(f"{res} - result")
+
 if __name__ == '__main__':
     output()
